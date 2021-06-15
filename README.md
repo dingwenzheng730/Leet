@@ -1,2 +1,2 @@
 # Leet
-Record of my personal solution to Leetcode Questions
+Record of my personal solutions to Leetcode Questions
