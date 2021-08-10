@@ -18,32 +18,34 @@ C3: No * /
 '''
 
 class Solution:
-    def calculate(self, s: str) -> int:
-        if not s:
-            return 0
-        operation_set = set(["+", "-", "*", "/"])
+    OPERATIONS = {'Add': '+', 'Minus': '-', 'Multiply': '*', 'Divide': '/'}
+    def calculate(self, s):
         stack = []
         curr_num = 0
-        curr_op = "+"
+        curr_operator = '+'
         for i in range(len(s)):
             if s[i].isdigit():
                 curr_num = curr_num * 10 + int(s[i])
-            if s[i] in operation_set or i == len(s)-1:
-                if curr_op == '+':
+            if s[i] in Solution.OPERATIONS.values() or i == len(s) - 1:
+                if curr_operator == Solution.OPERATIONS['Add']:
                     stack.append(curr_num)
-                elif curr_op == '-':
+                elif curr_operator == Solution.OPERATIONS['Minus']:
                     stack.append(-1*curr_num)
-                elif curr_op == '*':
-                    stack.append(stack.pop() * curr_num)
-                elif curr_op == '/':
-                    poped_val = stack.pop()
-                    if poped_val >= 0:
-                        stack.append(poped_val // curr_num)
-                    else:
-                        adjusted_num = (poped_val * (-1)) // curr_num
-                        stack.append( -1 * adjusted_num )
-                
+                elif curr_operator == Solution.OPERATIONS['Multiply']:
+                    working_num = stack.pop()
+                    curr_num = working_num * curr_num
+                    stack.append(curr_num)
+                elif curr_operator == Solution.OPERATIONS['Divide']:
+                    working_num = stack.pop()
+                    curr_num = self.custom_divide(working_num, curr_num)
+                    stack.append(curr_num)
+                curr_operator = s[i]
                 curr_num = 0
-                curr_op = s[i]
-                
+
         return sum(stack)
+    
+    def custom_divide(self, num1, num2):
+        if num1 >= 0:
+            return num1 // num2
+        else:
+            return -1*(-1*num1 // num2)

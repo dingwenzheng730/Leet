@@ -47,15 +47,13 @@ class Solution:
                 sign = -1
                 working_num = 0
             elif char == '(':
-                stack.append(res)
-                stack.append(sign)
+                stack.append((res, sign))
                 res = 0
                 sign = 1
             elif char == ')':
+                before_res, before_sign = stack.pop()
                 res += sign * working_num
-                before_sign = stack.pop()
                 res = before_sign * res
-                before_res = stack.pop()
                 res += before_res
                 working_num = 0
         return res + sign * working_num
